@@ -1,0 +1,201 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+        <title></title>
+    <style type="text/css">
+#pleft{ width:10%; height: 50px;  background:#CCC; left:10%; position:absolute; bottom:25%;}    
+#pcenter{ width:10%; height: 50px;  background:#CCC; left:47%; position:absolute; bottom:25%;}
+#pright{ width:10%; height: 50px;  background:#CCC; right:10%; position:absolute; bottom:25%;}    
+
+#pleftbtn{ width:17%; height: 10%;  background:#999; left:8%; position:absolute; bottom:10%; border-radius:40px;}    
+#pcenterbtn{ width:17%; height: 10%;  background:#999; left:43%; position:absolute; bottom:10%; border-radius:40px; }
+#prightbtn{ width:17%; height: 10%;  background:#999; right:8%; position:absolute; bottom:10%; border-radius:40px; }    
+
+
+
+#plefttop{ width:10%; height: 50px;  background:#FFF; left:10%; position:absolute; top:20%;}    
+#prighttop{ width:10%; height: 50px;  background:#FFF; right:10%; position:absolute; top:20%;}    
+#pcentertop{ width:10%; height: 50px;  background:#FFF; left:43%; position:absolute; top:20%;}   
+    </style>
+</head>
+<body>
+
+<div class='content' id='page2'>
+<input type='hidden' id='scr' value='0'>	
+<div style='font-size:33px; background:#000; color:#FFF;'>Score: <span id='score'>0</span></div>	
+<div style='font-size:150%; width:100%; height:10%;' align='center' id='msg'></div>
+<div id='plefttop' class='aa'></div>
+<div id='pcentertop' class='aa'></div>
+<div id='prighttop' class='aa'></div>
+
+<div id='pleft'></div>
+<div id='pcenter'></div>
+<div id='pright'></div>
+
+
+<div id='pleftbtn' onclick='pushleft()'></div>
+<div id='pcenterbtn' onclick='pushcenter()'></div>
+<div id='prightbtn' onclick='pushright()'></div>
+<button class='btn' style='color:#FFF; width:100%; font-size:160%; background:#000; bottom:0; position:absolute;' onclick='mainmenu()'>Back to main menu</button>
+</div>
+<input type='hidden' id='pos' value=''>
+
+
+ <div class='content' id='page3' style='dispaly:none;'>
+
+   <div class='row' align='center' style='margin-top:5%; width:100%;'><h2><b>GAME OVER!</b></h2><br>
+   <h3>Your Score is <span id='tot'></span></h3>
+   </div>
+   <div class='row' align='center' style='width:100%;'><button class='btn btn-primary forn-group' onclick='playAgain()'>Try Again</button></div>
+    </div>
+
+
+     <div class='content' id='page1' style='dispaly:none;'>
+     <div class='row' align='center' style='margin-top:6%; width:100%;'><h1><b>Blobby</b></h1>
+     <div style='background:#FFF; width:34%; height:150px; width:100%;' align='center'><img src='img/logo.png' style='width:50%; height:100%;' class='img-responsive'></div>
+       </div>
+     
+     <div style='position:absolute; bottom:0; width:100%;'  >
+     <button  class='btn' style='background:#000; color:white; width:100%; font-size:250%;' onclick='playAgain()'>Play!</button>
+     <button class='btn' style=' background:#000; color:white; width:100%; margin-top:2px; font-size:250%;' onclick='shoeInstruction()'>How to play</button>
+     <div style=' display:none; width:100%; font-size:20px;' id='instructions'>Trigger the round buttons to hit the black squares with your squares! Enjoy!</div>
+     </div>
+     </div>
+
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+   mainmenu();
+});
+C={};
+C.xx='stop';
+function movetarget(){
+
+if(C.xx=='stop'){  return false; }	
+if(C.xx=='continue')
+{
+$('.aa').css({'background':'#FFF'});
+setTimeout(function(){
+
+
+m=Math.floor((Math.random() * 3) + 1);
+$('#pos').val(m);
+switch(m){
+case 1:  $('#plefttop').css({'background':'#000'});  break;
+case 2: $('#pcentertop').css({'background':'#000'}); break;
+case 3: $('#prighttop').css({'background':'#000'}); break;	
+}
+$('.aa').animate({'top':'18%'},function(){ $('.aa').animate({'top':'20%'}); });
+
+},900);
+setTimeout(function(){ movetarget(); },1900);
+}
+
+
+
+
+}
+
+function correctmsg(){
+$('#msg').css({'margin-left':'-100%','color':'blue'}).html("Nice one!");
+                $('#msg').animate({'margin-left':'0%'},function(){ setTimeout(function(){ 
+                	$('#msg').animate({'margin-left':'-100%'}); },2000);
+ 
+                	 });
+
+}
+
+function errormsg(){
+$('#msg').css({'margin-left':'-100%','color':'red'}).html("Oh men!");
+                $('#msg').animate({'margin-left':'0%'},function(){ setTimeout(function(){ 
+                	$('#msg').animate({'margin-left':'-100%'}); },2000);
+ 
+                	 });	
+}
+
+
+function pushleft(){
+scr=$('#scr').val();	
+x=$('#pos').val();
+$('#pleftbtn').css({'background':'rgba(255,0,0,0.8)'});
+
+if(x==1){ score=parseInt(scr)+1; $('#scr').val(score+"");   $('#score').text(score+""); 
+correctmsg();
+}
+else{  $('#plefttop').css({'background':'rgba(255,0,0,0.4)'}); setTimeout(function(){ gameover(); },500); 
+}
+$('#pleft').css({'background':'orange'});
+$('#pleft').animate({'bottom':'75%'},function(){ $('#pleft').animate({'bottom':'25%'}); $('#pleft').css({'background':'#CCC'}); 
+$('#pleftbtn').css({'background':'#999'});
+});
+}
+function pushcenter(){
+scr=$('#scr').val();	
+x=$('#pos').val();
+$('#pcenterbtn').css({'background':'rgba(255,0,0,0.8)'});
+if(x==2){ score=parseInt(scr)+1; $('#scr').val(score+""); $('#score').text(score+""); correctmsg(); }
+else{  $('#pcentertop').css({'background':'rgba(255,0,0,0.4)'}); setTimeout(function(){ gameover(); },500); }
+$('#pcenter').css({'background':'orange'});
+$('#pcenter').animate({'bottom':'75%'},function(){ $('#pcenter').animate({'bottom':'25%'}); $('#pcenter').css({'background':'#CCC'}); $('#pcenterbtn').css({'background':'#999'});});	
+}
+function pushright(){
+scr=$('#scr').val();	
+x=$('#pos').val();
+$('#prightbtn').css({'background':'rgba(255,0,0,0.8)'});
+if(x==3){ score=parseInt(scr)+1; $('#scr').val(score+"");  $('#score').text(score+""); correctmsg();}
+else{  $('#prighttop').css({'background':'rgba(255,0,0,0.4)'}); setTimeout(function(){ gameover(); },500); }
+$('#pright').css({'background':'orange'});
+$('#pright').animate({'bottom':'75%'},function(){ $('#pright').animate({'bottom':'25%'}); $('#pright').css({'background':'#CCC'}); 
+$('#prightbtn').css({'background':'#999'});
+});	
+}
+
+
+
+   function shoeInstruction(){ $('#instructions').slideToggle(); }
+         
+             function mainmenu(){
+            
+             	$('#scr').val(0);
+             	 $('#score').text(0);
+          
+            $('#page1').show();        
+            $('#page3').hide();
+            $('#page2').hide();    
+            }
+
+            function playAgain(){
+            	$('#msg').css({'position:absolute':'','margin-left':'-100%','color':'green'}).html("Let the game Begin!");
+                $('#msg').animate({'margin-left':'0%'},function(){ setTimeout(function(){ 
+                	$('#msg').animate({'margin-left':'-100%'}); 
+                   C.xx='continue';
+            movetarget(); 
+                },2000);
+                	 });
+                 
+             	$('#scr').val(0);
+             	 $('#score').text(0);
+             	
+            $('#page3').hide();
+            $('#page1').hide();
+            $('#page2').show();
+             
+            }
+
+            function gameover(){
+            	C.xx='stop';
+           movetarget();
+            scr=$('#scr').val();
+            $('#tot').text(scr);
+            $('#page1').hide();
+            $('#page3').show();
+            $('#page2').hide();    
+            }
+</script>
+</body>
+</html>
